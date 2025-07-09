@@ -127,39 +127,39 @@ Validate that the user-provided URL is properly formatted and accessible.
 - No URL validation is attempted during maintenance
 - System maintains data integrity during maintenance period
 
-### Non Functional Requirements Implementation
+## Non Functional Requirements Implementation
 
 This section shows how the use case steps implement the non-functional requirements from Section A (Requirements Gathering):
 
-#### Performance Requirements Implementation
+### Performance Requirements Implementation
 - **Requirement**: "URL validation must complete within 5 seconds for 95% of requests"
 - **Implementation in Use Case Steps**:
   - Step 3: HTTP request timeout set to 5 seconds maximum
   - Step 4: Security screening cached for faster response
   - Parallel processing in batch operations (Alternative Flow Step 3)
 
-#### Scalability Requirements Implementation  
+### Scalability Requirements Implementation  
 - **Requirement**: "System must handle 1,000 concurrent URL validations"
 - **Implementation in Use Case Steps**:
   - Step 3: Connection pooling for HTTP requests
   - Alternative Flow: Parallel processing for batch operations
   - Queue management for high-volume requests
 
-#### Security Requirements Implementation
+### Security Requirements Implementation
 - **Requirement**: "All URLs must be screened for malicious content"
 - **Implementation in Use Case Steps**:
   - Step 4: Integration with security screening service
   - Blacklist checking against known malicious domains
   - Content type validation
 
-#### Reliability Requirements Implementation
+### Reliability Requirements Implementation
 - **Requirement**: "99.9% uptime for URL validation service"
 - **Implementation in Use Case Steps**:
   - Prerequisite: UC-001 ensures service availability
   - Retry logic for transient failures
   - Graceful degradation when security service unavailable
 
-#### Architecture Components Needed to Support This Use Case:
+### Architecture Components Needed to Support This Use Case:
 
 **Performance Architecture:**
 - **Load Balancer**: Distribute URL validation requests across multiple instances
