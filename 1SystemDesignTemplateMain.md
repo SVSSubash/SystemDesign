@@ -1,8 +1,14 @@
 This design template ensures that all design decisions are traceable back to real user needs and system behaviors
 # System Design Template
 
-## Functional Main Component
+## A. First Steps (WHAT YOU NEED - REQUIREMENTS GATHERING) (FUNCTIONAL AND NON FUNCTIONAL)
+## Functional and Non functional
+## Domain Understanding Component
+## problem statement component
+## Requirements gathering component
 
+## B. Deep Dive (HOW YOU'LL ACHIEVE IT - USE CASE FLOWS) (FUNCTIONAL)
+## Functional 
 ## Use Case Component
 **Use Case Name**
 **Goals**
@@ -69,7 +75,8 @@ This design template ensures that all design decisions are traceable back to rea
 
 ## UI behavior/Workflows component
 
-## Non Functional Main Component
+## C. Implementation Details (HOW WELL IT DOES IT, HOW YOU'LL IMPLEMENT IT) (NON FUNCTIONAL)
+## Non Functional
 ## Architecture Component
 - **Performance requirements**
 - **Scalability Constraints**

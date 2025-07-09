@@ -1,7 +1,7 @@
 This design template ensures that all design decisions are traceable back to real user needs and system behaviors
 # System Design Template
 
-## A. First Steps (Requirements Gathering)
+## A. First Steps (Requirements Gathering WHAT YOU NEED - REQUIREMENTS GATHERING) (FUNCTIONAL AND NON FUNCTIONAL)
 
 ### 0. Domain Understanding
 - **Domain Context**
@@ -51,7 +51,7 @@ This design template ensures that all design decisions are traceable back to rea
   - *Example*: HIPAA compliance for healthcare data (encryption, access controls)
   - *Example*: PCI DSS compliance for payment card data processing
 
-## B. Deep Dive (Use Case Components)
+## B. Deep Dive (Use Case Components HOW YOULL ACHIEVE IT - USE CASE FLOWS) (FUNCTIONAL)
 
 ### Use Case Component
 **Use Case Name**
@@ -155,8 +155,6 @@ This design template ensures that all design decisions are traceable back to rea
 **Exception Flow Postconditions**
 - *Example*: System maintains integrity, user is notified, alternative provided
 
-## C. Implementation Details
-
 ### UI behavior/Workflows component
 - **User Interface Workflows**
   - *Example*: User Registration Flow: Landing Page → Sign-up Form → Email Verification → Welcome Dashboard
@@ -180,6 +178,8 @@ This design template ensures that all design decisions are traceable back to rea
   - *Example*: Error states: Friendly error messages with retry buttons and support contact
   - *Example*: Empty states: Onboarding guidance when no data exists (empty dashboard)
   - *Example*: Success states: Confirmation messages with next action suggestions
+
+## C. Implementation Details (HOW WELL IT DOES IT, HOW YOULL IMPLEMENT IT) (NON FUNCTIONAL)
 
 ### Architecture Component
 - **Performance requirements**
