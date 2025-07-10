@@ -1,0 +1,42 @@
+sequenceDiagram
+    participant U as User
+    participant LB as Load Balancer
+    participant API as API Gateway
+    participant VS as Validation Service
+    participant HC as HTTP Client
+    participant SS as Security Service
+    participant DB as Database
+    participant Cache as Cache Layer
+    
+    Note over U,Cache: UC-002: URL Validation Flow
+    
+    U->>+LB: 1. Submit URL
+    Note right of LB: Performance: <200ms
+    LB->>+API: Route request
+    API->>+VS: Validate URL format
+    
+    VS->>+Cache: Check format cache
+    Cache-->>-VS: Cache miss/hit
+    
+    alt Format validation
+        VS->>VS: Regex validation
+        Note right of VS: Performance: <50ms
+        VS->>+HC: Check accessibility
+        HC->>HC: HTTP request (5s timeout)
+        Note right of HC: Connection pooling
+        HC-->>-VS: Response received
+        
+        VS->>+SS: Security screening
+        SS->>+DB: Check blacklist
+        DB-->>-SS: Domain status
+        SS-->>-VS: Security cleared
+        
+        VS->>+Cache: Store result
+        Cache-->>-VS: Result cached
+    end
+    
+    VS-->>-API: Validation complete
+    API-->>-LB: Success response
+    LB-->>-U: URL validated
+    
+    Note over U,Cache: All steps include audit logging

@@ -1,0 +1,64 @@
+
+flowchart LR
+    subgraph User ["👤 User"]
+        direction TB
+        U1[Enter URL]
+        U8[Receive Result]
+    end
+    
+    subgraph API ["🌐 API Gateway"]
+        direction TB
+        A1[Receive Request<br/>⏱️ <200ms]
+        A2[Route Request]
+        A7[Return Response]
+    end
+    
+    subgraph Validation ["✅ Validation Service"]
+        direction TB
+        V1[Format Check<br/>⏱️ <50ms]
+        V2[Accessibility Check<br/>⏱️ 5s timeout]
+        V6[Compile Results]
+    end
+    
+    subgraph Security ["🔒 Security Service"]
+        direction TB
+        S1[Malware Scan]
+        S2[Blacklist Check]
+        S3[Security Report]
+    end
+    
+    subgraph Data ["💾 Data Layer"]
+        direction TB
+        D1[Validation Cache]
+        D2[Blacklist DB]
+        D3[Audit Logs]
+    end
+    
+    %% Flow arrows
+    U1 --> A1
+    A1 --> A2
+    A2 --> V1
+    V1 -.-> D1
+    V1 --> V2
+    V2 --> S1
+    S1 --> S2
+    S2 -.-> D2
+    S2 --> S3
+    S3 --> V6
+    V6 -.-> D3
+    V6 --> A7
+    A7 --> U8
+    
+    %% Performance annotations
+    A1 -.-> NF1[Performance: <200ms<br/>Scalability: 1000 req/sec]
+    V1 -.-> NF2[Performance: <50ms<br/>Cache: 95% hit rate]
+    V2 -.-> NF3[Timeout: 5s<br/>Retry: 3 attempts]
+    S2 -.-> NF4[Security: 100% screening<br/>Accuracy: 99.99%]
+    
+    %% Styling
+    class U1,U8 user
+    class A1,A2,A7 api
+    class V1,V2,V6 validation
+    class S1,S2,S3 security
+    class D1,D2,D3 data
+    class NF1,NF2,NF3,NF4 nfr

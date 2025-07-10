@@ -25,8 +25,9 @@ How to design a software system?
       expected result, 
       failure criteria, controlled failure or uncontrolled failure
       not expected result.)
+      3. Add NFR
+      4. Add Architectural component.
    6. Alternate flows should answer the question, Is there another way of doing the same thing? (Gets Alternate flow)
       Follows same methodology as step 5.
    7. Exceptional flows should answer the question Can something exceptional happen? (Eg. Like an emergency fire)
       Follows same methodology as step 5.
-3. Implementation Details

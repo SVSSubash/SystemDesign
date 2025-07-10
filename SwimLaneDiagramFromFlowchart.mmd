@@ -1,0 +1,68 @@
+flowchart TD
+    %% Define swimlanes using subgraphs
+    subgraph "User"
+        U1[Enter URL]
+        U2[Receive Validation Result]
+    end
+    
+    subgraph "API Gateway"
+        A1[Receive Request]
+        A2[Route to Validation Service]
+        A3[Return Response]
+    end
+    
+    subgraph "Validation Service"
+        V1[Validate URL Format]
+        V2[Check URL Accessibility]
+        V3[Compile Results]
+    end
+    
+    subgraph "Security Service"
+        S1[Screen for Malware]
+        S2[Check Blacklist]
+        S3[Return Security Status]
+    end
+    
+    subgraph "External Systems"
+        E1[HTTP Request to URL]
+        E2[Threat Detection API]
+    end
+    
+    subgraph "Database/Cache"
+        D1[Check Validation Cache]
+        D2[Query Blacklist DB]
+        D3[Store Results]
+    end
+    
+    %% Flow connections
+    U1 --> A1
+    A1 --> A2
+    A2 --> V1
+    
+    V1 --> D1
+    D1 --> V1
+    
+    V1 --> V2
+    V2 --> E1
+    E1 --> V2
+    
+    V2 --> S1
+    S1 --> S2
+    S2 --> D2
+    D2 --> S2
+    
+    S2 --> E2
+    E2 --> S3
+    S3 --> V3
+    
+    V3 --> D3
+    D3 --> A3
+    A3 --> U2
+    
+    %% Styling for different actors
+    class U1,U2 user
+    class A1,A2,A3 api
+    class V1,V2,V3 validation
+    class S1,S2,S3 security
+    class E1,E2 external
+    class D1,D2,D3 data

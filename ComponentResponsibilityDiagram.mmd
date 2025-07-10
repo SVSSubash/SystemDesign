@@ -1,0 +1,31 @@
+graph TB
+    %% Use Case Steps
+    subgraph "📋 UC-002 Use Case Steps"
+        Step1[Step 1: Receive URL<br/>NFR: Performance <10ms, Security sanitization]
+        Step2[Step 2: Validate Format<br/>NFR: Performance <50ms, Reliability 99.9%]
+        Step3[Step 3: Check Accessibility<br/>NFR: Performance 5s timeout, Scalability 1000 req]
+        Step4[Step 4: Security Screening<br/>NFR: Security 100% coverage, Compliance logging]
+    end
+    
+    %% Component Responsibilities
+    subgraph "🔧 Component Responsibilities"
+        InputHandler[Input Handler<br/>Responsible for: Step 1 NFRs<br/>• Performance: <10ms processing<br/>• Security: Input sanitization]
+        
+        URLValidator[URL Validator<br/>Responsible for: Step 2 NFRs<br/>• Performance: <50ms validation<br/>• Reliability: 99.9% accuracy]
+        
+        AccessChecker[Access Checker<br/>Responsible for: Step 3 NFRs<br/>• Performance: 5s timeout<br/>• Scalability: Connection pooling]
+        
+        SecurityScanner[Security Scanner<br/>Responsible for: Step 4 NFRs<br/>• Security: 100% screening<br/>• Compliance: Audit logging]
+    end
+    
+    %% Step to Component Mapping
+    Step1 -->|Implements| InputHandler
+    Step2 -->|Implements| URLValidator
+    Step3 -->|Implements| AccessChecker
+    Step4 -->|Implements| SecurityScanner
+    
+    %% NFR Dependencies
+    InputHandler -.->|Enables| Performance[Performance Architecture<br/>API Gateway, Load Balancer]
+    URLValidator -.->|Enables| Caching[Caching Architecture<br/>Redis, Pattern Cache]
+    AccessChecker -.->|Enables| Resilience[Resilience Architecture<br/>Circuit Breaker, Retry Logic]
+    SecurityScanner -.->|Enables| Security[Security Architecture<br/>Threat Intelligence, Audit DB]

@@ -1,0 +1,26 @@
+flowchart TD
+    %% Use Case Flow Layer
+    A[User Input: Enter URL] --> B[Step 1: Receive URL]
+    B --> C[Step 2: Validate Format]
+    C --> D[Step 3: Check Accessibility]
+    D --> E[Step 4: Security Screening]
+    E --> F[Success: URL Validated]
+    
+    %% Architecture Components Layer
+    B -.-> B1[Input Validator<br/>Load Balancer<br/>API Gateway]
+    C -.-> C1[Regex Engine<br/>Validation Cache<br/>Pattern Matcher]
+    D -.-> D1[HTTP Client<br/>Connection Pool<br/>Circuit Breaker]
+    E -.-> E1[Security Service<br/>Blacklist Database<br/>Malware Scanner]
+    F -.-> F1[Response Handler<br/>Audit Logger<br/>Result Cache]
+    
+    %% Non-Functional Requirements
+    B1 -.-> NF1[Performance: <200ms<br/>Scalability: 1000 req/sec]
+    C1 -.-> NF2[Performance: <50ms<br/>Reliability: 99.9%]
+    D1 -.-> NF3[Performance: 5s timeout<br/>Reliability: Retry logic]
+    E1 -.-> NF4[Security: 100% screening<br/>Compliance: Threat detection]
+    F1 -.-> NF5[Audit: Complete logging<br/>Monitoring: Success metrics]
+    
+    %% Styling
+    class A,B,C,D,E,F usecase
+    class B1,C1,D1,E1,F1 components
+    class NF1,NF2,NF3,NF4,NF5 requirements

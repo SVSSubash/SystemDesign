@@ -1,0 +1,83 @@
+
+flowchart TD
+    Start([User Enters URL]) --> Input{Valid Input?}
+    
+    %% Input validation branch
+    Input -->|No| InputError[Display Input Error]
+    InputError --> End1([End: Error])
+    
+    Input -->|Yes| FormatCheck[Validate URL Format]
+    
+    %% Format validation branch
+    FormatCheck --> FormatValid{Format Valid?}
+    FormatValid -->|No| FormatError[Return Format Error]
+    FormatError --> End2([End: Format Error])
+    
+    %% Cache check branch
+    FormatValid -->|Yes| CacheCheck{Check Cache}
+    CacheCheck -->|Hit| CacheResult[Return Cached Result]
+    CacheResult --> End3([End: Success from Cache])
+    
+    %% Accessibility check branch
+    CacheCheck -->|Miss| AccessCheck[Check URL Accessibility]
+    AccessCheck --> Timeout{Response within 5s?}
+    
+    Timeout -->|No| TimeoutError[Return Timeout Error]
+    TimeoutError --> End4([End: Timeout Error])
+    
+    Timeout -->|Yes| ResponseCheck{Valid Response?}
+    ResponseCheck -->|No| AccessError[Return Access Error]
+    AccessError --> End5([End: Access Error])
+    
+    %% Security screening branch
+    ResponseCheck -->|Yes| SecurityScreen[Security Screening]
+    SecurityScreen --> BlacklistCheck{Check Blacklist}
+    
+    BlacklistCheck -->|Found| SecurityError[Return Security Error]
+    SecurityError --> End6([End: Security Error])
+    
+    BlacklistCheck -->|Clean| MalwareCheck{Malware Scan}
+    MalwareCheck -->|Detected| SecurityError
+    
+    %% Success path
+    MalwareCheck -->|Clean| StoreCache[Store in Cache]
+    StoreCache --> AuditLog[Log Success Event]
+    AuditLog --> Success[Return Success]
+    Success --> End7([End: Success])
+    
+    %% Parallel processes (shown with subgraph)
+    subgraph "Parallel Monitoring"
+        Monitor1[Performance Metrics]
+        Monitor2[Security Alerts]
+        Monitor3[Audit Logging]
+    end
+    
+    %% Connect monitoring to main flow
+    FormatCheck -.-> Monitor1
+    SecurityScreen -.-> Monitor2
+    AuditLog -.-> Monitor3
+    
+    %% Error handling subprocess
+    subgraph "Error Handling"
+        ErrorLog[Log Error Event]
+        ErrorMetrics[Update Error Metrics]
+        ErrorNotify[Notify Operations Team]
+    end
+    
+    %% Connect errors to error handling
+    InputError -.-> ErrorLog
+    FormatError -.-> ErrorLog
+    TimeoutError -.-> ErrorLog
+    AccessError -.-> ErrorLog
+    SecurityError -.-> ErrorLog
+    
+    ErrorLog --> ErrorMetrics
+    ErrorMetrics --> ErrorNotify
+    
+    %% Styling
+    class Start,End1,End2,End3,End4,End5,End6,End7 startend
+    class FormatCheck,AccessCheck,SecurityScreen,StoreCache,AuditLog,Success process
+    class Input,FormatValid,CacheCheck,Timeout,ResponseCheck,BlacklistCheck,MalwareCheck decision
+    class InputError,FormatError,TimeoutError,AccessError,SecurityError error
+    class CacheResult success
+    class Monitor1,Monitor2,Monitor3,ErrorLog,ErrorMetrics,ErrorNotify monitoring
