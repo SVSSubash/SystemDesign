@@ -34,7 +34,15 @@ Validate that the user-provided URL is properly formatted and accessible.
 - UC-001 completed successfully
 
 ## Main Flow
+- **Importance Category**
+  - Primary: Core business-critical steps
+  - Secondary: Supporting or enhancement steps
 
+- **Abstraction Category**  
+  - High level: Business process steps
+  - Low level: Technical implementation steps
+
+- **Steps**
 1. System receives URL from user input
    - **Success**: URL captured successfully → Continue to step 2
    - **Failure**: Input validation error → Display "Invalid input format"
@@ -120,6 +128,15 @@ Validate that the user-provided URL is properly formatted and accessible.
 - Batch file is available and accessible
 - UC-001 completed successfully
 
+- **Importance Category**
+  - Primary: Core business-critical steps
+  - Secondary: Supporting or enhancement steps
+
+- **Abstraction Category**  
+  - High level: Business process steps
+  - Low level: Technical implementation steps
+
+- **Steps**
 1. Admin uploads batch file containing multiple URLs
    - **Success**: File uploaded and parsed successfully → Continue to step 2
    - **Failure**: File upload error or unsupported format → Display "Please upload a valid CSV/TXT file"
@@ -200,6 +217,15 @@ Validate that the user-provided URL is properly formatted and accessible.
 - User attempts URL validation during maintenance period
 - Maintenance mode is activated in the system
 
+- **Importance Category**
+  - Primary: Core business-critical steps
+  - Secondary: Supporting or enhancement steps
+
+- **Abstraction Category**  
+  - High level: Business process steps
+  - Low level: Technical implementation steps
+
+- **Steps**
 1. System detects maintenance mode is active
    - **Success**: Maintenance mode detected → Continue to step 2
    - **Failure**: Maintenance mode detection fails → Continue with normal flow (potential system instability)
