@@ -4,11 +4,20 @@
 Validate that the user-provided URL is properly formatted and accessible.
 
 ## Goals
-- Ensure all URLs processed by the system are properly formatted according to RFC 3986 standards
-- Verify URL accessibility and reachability before further processing
-- Maintain system security by screening URLs for malicious content
-- Provide clear feedback to users when URL validation fails
-- Support both individual and batch URL validation workflows
+**Business Goals** (Why do you want to achieve this? - Business value motivation)
+  - *Example*: Increase revenue by 20% through improved online sales conversion
+  - *Example*: Reduce patient wait times by 30% through efficient appointment scheduling
+  - *Example*: Improve customer satisfaction by providing 24/7 self-service banking capabilities
+  - Ensure all URLs processed by the system are properly formatted according to RFC 3986 standards
+  - Verify URL accessibility and reachability before further processing
+  - Maintain system security by screening URLs for malicious content
+  - Provide clear feedback to users when URL validation fails
+  - Support both individual and batch URL validation workflows
+  
+**Functionality Goals** (Why do you want to achieve this? - Functionality perspective)
+  - *Example*: Enable seamless product discovery and purchase workflow
+  - *Example*: Provide real-time appointment availability and booking confirmation
+  - *Example*: Ensure secure, instant fund transfers with transaction verification
 
 ## Boundaries
 **In Scope:**
