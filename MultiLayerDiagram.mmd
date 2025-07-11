@@ -1,0 +1,182 @@
+graph TD
+    %% USE CASE LAYER - Make this prominent and traceable
+    subgraph "📋 UC-002: URL VALIDATION USE CASE"
+        direction TB
+        UC[UC-002: URL Validation]
+        Step1[Step 1: Receive URL Input<br/>User submits URL for validation]
+        Step2[Step 2: Validate Format<br/>Check URL syntax and structure]
+        Step3[Step 3: Check Accessibility<br/>Verify URL is reachable]
+        Step4[Step 4: Security Screening<br/>Scan for threats and malware]
+        
+        Step1 --> Step2
+        Step2 --> Step3
+        Step3 --> Step4
+    end
+    
+    %% User Layer
+    subgraph "👤 User Layer"
+        User[User/Client Application]
+    end
+    
+    %% External Interface Layer
+    subgraph "🌐 External Interface Layer"
+        LB[Load Balancer<br/>Nginx/AWS ALB]
+        CDN[CDN<br/>CloudFront]
+    end
+    
+    %% API Gateway Layer
+    subgraph "🚪 API Gateway Layer"
+        Gateway[API Gateway<br/>Kong/AWS Gateway]
+        Auth[Auth Service<br/>OAuth 2.0/JWT]
+        RateLimit[Rate Limiter<br/>Redis-based]
+    end
+    
+    %% Application Services Layer
+    subgraph "⚙️ Application Services Layer"
+        ValidSvc[Validation Service<br/>Node.js/Spring Boot]
+        SecuritySvc[Security Service<br/>Microservice]
+        NotificationSvc[Notification Service<br/>Email/SMS]
+    end
+    
+    %% Business Logic Layer
+    subgraph "🧠 Business Logic Layer"
+        URLValidator[URL Format Validator<br/>Regex Engine]
+        AccessChecker[Accessibility Checker<br/>HTTP Client]
+        SecurityScanner[Security Scanner<br/>ML/Rules Engine]
+        AuditManager[Audit Manager<br/>Event Logger]
+    end
+    
+    %% Data Access Layer
+    subgraph "💾 Data Access Layer"
+        CacheManager[Cache Manager<br/>Redis Client]
+        DBManager[Database Manager<br/>PostgreSQL Client]
+        ExternalAPIManager[External API Manager<br/>HTTP Client Pool]
+    end
+    
+    %% Infrastructure Layer
+    subgraph "🏗️ Infrastructure Layer"
+        RedisCache[(Redis Cache<br/>In-Memory Store)]
+        PostgresDB[(PostgreSQL<br/>Primary Database)]
+        AuditStore[(Elasticsearch<br/>Audit Logs)]
+        ExternalAPIs[External APIs<br/>VirusTotal, DNS]
+    end
+    
+    %% Monitoring & Observability Layer
+    subgraph "📊 Monitoring Layer"
+        MetricsCollector[Metrics Collector<br/>Prometheus]
+        LogAggregator[Log Aggregator<br/>ELK Stack]
+        AlertManager[Alert Manager<br/>PagerDuty]
+        HealthChecker[Health Checker<br/>Custom Service]
+    end
+    
+    %% USE CASE TO COMPONENT MAPPINGS - Clear traceability
+    Step1 -.->|Uses| LB
+    Step1 -.->|Uses| Gateway
+    Step1 -.->|Uses| Auth
+    Step1 -.->|Uses| RateLimit
+    Step1 -.->|Uses| ValidSvc
+    
+    Step2 -.->|Uses| URLValidator
+    Step2 -.->|Uses| CacheManager
+    Step2 -.->|Uses| RedisCache
+    
+    Step3 -.->|Uses| AccessChecker
+    Step3 -.->|Uses| ExternalAPIManager
+    Step3 -.->|Uses| ExternalAPIs
+    
+    Step4 -.->|Uses| SecuritySvc
+    Step4 -.->|Uses| SecurityScanner
+    Step4 -.->|Uses| DBManager
+    Step4 -.->|Uses| PostgresDB
+    Step4 -.->|Uses| ExternalAPIs
+    
+    %% STEP-BY-STEP COMPONENT INTERACTIONS WITH USE CASE LABELS
+    
+    %% Step 1: Receive URL Input - Component Interactions
+    User -->|UC Step 1.1: HTTP Request| LB
+    User -->|UC Step 1.2: Static Assets| CDN
+    LB -->|UC Step 1.3: Route Request| Gateway
+    Gateway -->|UC Step 1.4: Authenticate| Auth
+    Auth -->|UC Step 1.5: Validate Token| RedisCache
+    Gateway -->|UC Step 1.6: Check Rate Limit| RateLimit
+    RateLimit -->|UC Step 1.7: Rate Check| RedisCache
+    Gateway -->|UC Step 1.8: Forward Request| ValidSvc
+    
+    %% Step 2: Format Validation - Component Interactions
+    ValidSvc -->|UC Step 2.1: Check Cache| CacheManager
+    CacheManager -->|UC Step 2.2: Cache Lookup| RedisCache
+    ValidSvc -->|UC Step 2.3: Validate Format| URLValidator
+    URLValidator -->|UC Step 2.4: Regex Check| URLValidator
+    ValidSvc -->|UC Step 2.5: Store Result| CacheManager
+    CacheManager -->|UC Step 2.6: Cache Store| RedisCache
+    
+    %% Step 3: Accessibility Check - Component Interactions
+    ValidSvc -->|UC Step 3.1: Check Access| AccessChecker
+    AccessChecker -->|UC Step 3.2: HTTP Request| ExternalAPIManager
+    ExternalAPIManager -->|UC Step 3.3: External Call| ExternalAPIs
+    ExternalAPIs -->|UC Step 3.4: Response| ExternalAPIManager
+    ExternalAPIManager -->|UC Step 3.5: Result| AccessChecker
+    AccessChecker -->|UC Step 3.6: Cache Result| CacheManager
+    
+    %% Step 4: Security Screening - Component Interactions
+    ValidSvc -->|UC Step 4.1: Security Check| SecuritySvc
+    SecuritySvc -->|UC Step 4.2: Scan URL| SecurityScanner
+    SecurityScanner -->|UC Step 4.3: Check Blacklist| DBManager
+    DBManager -->|UC Step 4.4: Query DB| PostgresDB
+    SecurityScanner -->|UC Step 4.5: External Scan| ExternalAPIManager
+    ExternalAPIManager -->|UC Step 4.6: Malware Check| ExternalAPIs
+    SecuritySvc -->|UC Step 4.7: Store Threat Data| DBManager
+    
+    %% Cross-cutting Concerns - All Use Case Steps
+    ValidSvc -.->|All Steps: Metrics| MetricsCollector
+    SecuritySvc -.->|All Steps: Metrics| MetricsCollector
+    Gateway -.->|All Steps: Access Logs| LogAggregator
+    Auth -.->|All Steps: Auth Events| AuditManager
+    AuditManager -.->|All Steps: Audit Trail| AuditStore
+    
+    %% Health Check Interactions - System Wide
+    HealthChecker -.->|Continuous: Health Check| ValidSvc
+    HealthChecker -.->|Continuous: Health Check| SecuritySvc
+    HealthChecker -.->|Continuous: Health Check| RedisCache
+    HealthChecker -.->|Continuous: Health Check| PostgresDB
+    
+    %% Alert Interactions - Triggered by Use Case Events
+    MetricsCollector -.->|UC Performance Alerts| AlertManager
+    SecurityScanner -.->|UC Step 4: Security Alerts| AlertManager
+    HealthChecker -.->|UC Availability Alerts| AlertManager
+    
+    %% Notification Interactions - Use Case Completion
+    SecuritySvc -->|UC Step 4: Threat Detected| NotificationSvc
+    ValidSvc -->|UC Completion: Validation Complete| NotificationSvc
+    NotificationSvc -->|UC Result: Send Alert| ExternalAPIs
+    
+    %% Response Flow - Use Case Result
+    ValidSvc -->|UC Response: Validation Result| Gateway
+    Gateway -->|UC Log: Log Response| LogAggregator
+    Gateway -->|UC Response: Return Result| LB
+    LB -->|UC Final: Final Response| User
+    
+    %% Error Handling Interactions - Use Case Error Flows
+    subgraph "🚨 Error Handling - UC Exception Flows"
+        CircuitBreaker[Circuit Breaker<br/>UC Step 3&4: External Failures]
+        RetryManager[Retry Manager<br/>UC Step 3&4: Exponential Backoff]
+        ErrorHandler[Error Handler<br/>UC All Steps: Global Exception Handler]
+    end
+    
+    ExternalAPIManager -->|UC Step 3&4: Failure| CircuitBreaker
+    CircuitBreaker -->|UC Step 3&4: Fallback| RetryManager
+    RetryManager -->|UC Step 3&4: Max Retries| ErrorHandler
+    ErrorHandler -->|UC Error: Error Response| Gateway
+    
+    %% Styling for different component types
+
+    class UC,Step1,Step2,Step3,Step4 usecase
+    class User user
+    class LB,CDN interface
+    class Gateway,Auth,RateLimit gateway
+    class ValidSvc,SecuritySvc,NotificationSvc service
+    class URLValidator,AccessChecker,SecurityScanner,AuditManager logic
+    class CacheManager,DBManager,ExternalAPIManager data
+    class RedisCache,PostgresDB,AuditStore,ExternalAPIs infrastructure
+    class MetricsCollector,LogAggregator,AlertManager,HealthChecker monitoring
+    class CircuitBreaker,RetryManager,ErrorHandler error
